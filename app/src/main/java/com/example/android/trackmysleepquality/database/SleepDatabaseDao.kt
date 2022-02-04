@@ -35,7 +35,7 @@ interface SleepDatabaseDao {
     suspend fun get(key : Long) : SleepNight?
 
     @Query("Delete from daily_sleep_quality_table")
-    suspend fun clear(key: Long)
+    suspend fun clear()
 
     @Query("Select * from daily_sleep_quality_table ORDER BY nightId DESC")
     fun getAllNights() : LiveData<List<SleepNight>>
