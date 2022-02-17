@@ -43,6 +43,18 @@ class SleepTrackerViewModel(
         formatNights(nights, application.resources)
     }
 
+    val startButtonVisible = Transformations.map(tonight){
+        null == it
+    }
+
+    val stopButtonVisible = Transformations.map(tonight){
+        null != it
+    }
+
+    val clearButtonIsVisible = Transformations.map(nights){
+        it?.isNotEmpty()
+    }
+
     init {
         initializeTonight()
     }
@@ -130,7 +142,7 @@ class SleepTrackerViewModel(
     suspend fun clear() {
         database.clear()
     }
-    }
+}
 
 
 
