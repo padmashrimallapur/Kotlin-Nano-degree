@@ -32,9 +32,15 @@ import kotlinx.coroutines.launch
  */
 class SleepTrackerViewModel(
     val database: SleepDatabaseDao,
-    application: Application) : AndroidViewModel(application) {
+    application: Application
+) : AndroidViewModel(application) {
 
     private var tonight = MutableLiveData<SleepNight?>()
+
+    private var _showSnackBar = MutableLiveData<Boolean>()
+
+    val showSnackBar: MutableLiveData<Boolean>
+        get() = _showSnackBar
 
 
     private val _navigateToSleepQuality = MutableLiveData<SleepNight>()
@@ -43,15 +49,15 @@ class SleepTrackerViewModel(
         formatNights(nights, application.resources)
     }
 
-    val startButtonVisible = Transformations.map(tonight){
+    val startButtonVisible = Transformations.map(tonight) {
         null == it
     }
 
-    val stopButtonVisible = Transformations.map(tonight){
+    val stopButtonVisible = Transformations.map(tonight) {
         null != it
     }
 
-    val clearButtonIsVisible = Transformations.map(nights){
+    val clearButtonIsVisible = Transformations.map(nights) {
         it?.isNotEmpty()
     }
 
@@ -81,11 +87,10 @@ class SleepTrackerViewModel(
     }
 
 
-
-    val navigateToSleepQuality:LiveData<SleepNight>
+    val navigateToSleepQuality: LiveData<SleepNight>
         get() = _navigateToSleepQuality
 
-    fun doneNavigating(){
+    fun doneNavigating() {
         _navigateToSleepQuality.value = null
     }
 
@@ -103,7 +108,7 @@ class SleepTrackerViewModel(
         }
     }
 
-    private suspend fun insert(night: SleepNight){
+    private suspend fun insert(night: SleepNight) {
         database.insert(night)
     }
 
@@ -131,12 +136,16 @@ class SleepTrackerViewModel(
         database.update(night)
     }
 
-
     fun onClear() {
         viewModelScope.launch {
             clear()
             tonight.value = null
+            _showSnackBar.value = true
         }
+    }
+
+    fun doneShowingSnackBar() {
+        _showSnackBar.value = null
     }
 
     suspend fun clear() {
