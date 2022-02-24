@@ -24,7 +24,7 @@ android {
     compileSdkVersion 30
     defaultConfig {
         applicationId "com.example.android.trackmysleepquality"
-        minSdkVersion 19
+        minSdkVersion 26
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"
@@ -57,6 +57,8 @@ dependencies {
 
     // Room and Lifecycle dependencies
     implementation "androidx.room:room-runtime:$version_room"
+    //noinspection GradleCompatible
+    implementation 'com.android.support:recyclerview-v7:24.0.0'
     kapt "androidx.room:room-compiler:$version_room"
     implementation "androidx.lifecycle:lifecycle-extensions:$version_lifecycle_extensions"
 
