@@ -28,8 +28,5 @@ data class SleepNight(
                 var startTimeMilli:Long = System.currentTimeMillis(),
                 @ColumnInfo (name = "end_time_milli")
                 var endTimeMilli: Long = startTimeMilli,
-                @ColumnInfo(name = "sleep_quality")
-                var seepQuality : Int = -1) {
-
-
-}
+                @ColumnInfo(name = "quality_rating")
+                var seepQuality : Int = -1)
