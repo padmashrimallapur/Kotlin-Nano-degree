@@ -25,6 +25,7 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.text.HtmlCompat
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.android.trackmysleepquality.database.SleepNight
 import java.text.SimpleDateFormat
@@ -156,9 +157,6 @@ fun formatNights(nights: List<SleepNight>, resources: Resources): Spanned {
     } else {
         return HtmlCompat.fromHtml(sb.toString(), HtmlCompat.FROM_HTML_MODE_LEGACY)
     }
-
-
-
 }
 
 class ViewHolder( itemView: View) : RecyclerView.ViewHolder(itemView){
@@ -166,6 +164,37 @@ class ViewHolder( itemView: View) : RecyclerView.ViewHolder(itemView){
     val sleepQuality: TextView = itemView.findViewById(R.id.sleep_time)
     val sleepLength: TextView = itemView.findViewById(R.id.quality_string)
     val qualityImage: ImageView = itemView.findViewById(R.id.action_image)
+    val res = itemView.context.resources
 
+     fun bind(
+        item: SleepNight
+    ) {
+        sleepLength.text = convertNumericQualityToString(item.seepQuality, res)
+        sleepQuality.text =
+            convertDurationToFormatted(item.startTimeMilli, item.endTimeMilli, res)
+
+        qualityImage.setImageResource(
+            when (item.seepQuality) {
+                0 -> R.drawable.ic_sleep_0
+                1 -> R.drawable.ic_sleep_1
+                2 -> R.drawable.ic_sleep_2
+                3 -> R.drawable.ic_sleep_3
+                4 -> R.drawable.ic_sleep_4
+                5 -> R.drawable.ic_sleep_5
+                else -> R.drawable.ic_launcher_sleep_tracker_background
+            }
+        )
+    }
+}
+
+
+class SleepNightDiffCallback: DiffUtil.ItemCallback<SleepNight>(){
+    override fun areItemsTheSame(oldItem: SleepNight, newItem: SleepNight): Boolean {
+        return (oldItem.nightId == newItem.nightId)
+    }
+
+    override fun areContentsTheSame(oldItem: SleepNight, newItem: SleepNight): Boolean {
+        return (oldItem.equals(newItem))
+    }
 
 }
