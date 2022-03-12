@@ -22,18 +22,13 @@ import android.os.Build
 import android.text.Html
 import android.text.Spanned
 import android.view.LayoutInflater
-import android.view.View
-import android.view.View.inflate
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.core.text.HtmlCompat
-import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.android.trackmysleepquality.database.SleepNight
 import com.example.android.trackmysleepquality.databinding.ListItemViewBinding
-import com.example.android.trackmysleepquality.sleepquality.SleepQualityViewModel
+import com.example.android.trackmysleepquality.sleeptracker.SleepNightListener
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.TimeUnit
@@ -168,9 +163,11 @@ fun formatNights(nights: List<SleepNight>, resources: Resources): Spanned {
 class ViewHolder  constructor(private val binding: ListItemViewBinding): RecyclerView.ViewHolder(binding.root) {
 
      fun bind(
-        item: SleepNight
-    ) {
+         listener: SleepNightListener,
+         item: SleepNight
+     ) {
          binding.sleep = item
+         binding.clickListener = listener
          binding.executePendingBindings()
      }
 
